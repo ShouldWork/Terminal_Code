@@ -6,7 +6,21 @@ read type
 echo "What are you looking for in the file"
 read term
 
-list=$( find /Users/ -name "*.$type"  -exec grep -i $term {} \; )
-
-echo $list
-
+file=$( find /Users/ -name "*.$type"  -exec grep -i -l -R $term {} \; )
+line=$( find /Users/ -name "*.$type" -exec grep -i -R $term {} \; )
+echo ----------------------------------
+echo Found the term in the file -- $file
+echo ——————————————————————————————————
+echo Containing the phrase -- $line
+echo ----------------------------------
+if [ $type == "txt" ] || [ $type == "sh" ]; then
+	echo Would you like to open the file in TextEditor?
+	read answer
+	if [ $answer == "yes" ] || [ $answer == "Yes" ]; then
+		open -e $file
+	else
+		echo Ok, all finished then! 
+	fi 
+else
+	echo All finished!
+fi
